@@ -1,6 +1,6 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Medical Prescriptions</span>
+    <div style="cursor: pointer" (click)="redirectToDashboard()">Medical Prescriptions</div>
     <button mat-icon-button [matMenuTriggerFor]="menu">
       <mat-icon>more_vert</mat-icon>
     </button>

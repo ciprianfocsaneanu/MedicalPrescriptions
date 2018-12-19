@@ -18,4 +18,10 @@ export class AuthenticationService {
     // TODO: HTTP register call
     return resultSubject.asObservable();
   }
+
+  public login(loginPayload: any): Observable<boolean> {
+    const resultSubject = new Subject<boolean>();
+    // TODO: HTTP login call
+    return resultSubject.asObservable();
+  }
 }

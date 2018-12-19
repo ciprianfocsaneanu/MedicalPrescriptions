@@ -10,7 +10,7 @@ import { UserModel } from '../model/user.model';
 export class RegisterComponent implements OnInit {
 
   public newUser: UserModel;
-  confirmedPassword = '';
+  public confirmedPassword = '';
 
   private m_showSpinner = false;
 
