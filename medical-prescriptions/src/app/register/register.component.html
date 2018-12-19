@@ -1,3 +1,35 @@
-<p>
-  register works!
-</p>
+<mat-card class="register-card">
+  <mat-card-header>
+    <mat-card-title>
+      Register
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="example-form">
+      <mat-form-field class="form-field">
+        <input matInput placeholder="First Name" [(ngModel)]="newUser.firstname" type="password" name="firstname"
+          required>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Last Name" [(ngModel)]="newUser.lastname" type="password" name="lastname" required>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Username" [(ngModel)]="newUser.email" name="email" required>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Password" [(ngModel)]="newUser.password" type="password" name="password" required>
+      </mat-form-field>
+      <mat-form-field class="form-field">
+        <input matInput placeholder="Confirm password" [(ngModel)]="confirmedPassword" type="password" name="confirmedPassword"
+          required>
+      </mat-form-field>
+    </form>
+    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button [disabled]="showSpinner" class="mx-auto" (click)="register()" color="primary">Register</button>
+    <div style="margin-top: 20px; font-size: 14px">
+      <a href="/login"> I already have an account </a>
+    </div>
+  </mat-card-actions>
+</mat-card>
