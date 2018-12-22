@@ -1,3 +1,62 @@
-<p>
-  dashboard works!
-</p>
+<div class="row">
+  <div class="page-section col-xs-10 col-md-8">
+    <div class="row">
+      <!-- Left part - prescriptions list -->
+      <mat-spinner class="mx-auto" [diameter]="50" [style.display]="!prescriptionsLoaded ? 'block' : 'none'"></mat-spinner>
+      <div class="card col-xs-11 col-md-5" *ngFor="let prescription of prescriptions" (click)="prescriptionClicked(prescription)">
+        <div class="card-body w-100">
+          <div class="w-100">
+            <span class="field-title">
+              Id:
+            </span>
+            <span class="field-value">
+                {{prescription.id}}
+            </span>
+          </div>
+          <div>
+            <span class="field-title">
+              Date:
+            </span>
+            <span class="field-value">
+                {{prescription.date}}
+            </span>
+          </div>
+          <div>
+            <span class="field-title">
+              Medications: 
+            </span>
+            <span class="field-value">
+                {{prescription.medicationsNo}}
+            </span>
+          </div>
+          <div>
+            <span class="field-title">
+              Medic: 
+            </span>
+            <span class="field-value">
+                {{prescription.medic}}
+            </span>
+          </div>
+          <div>
+            <span class="field-title">
+              Diagnosis: 
+            </span>
+            <span class="field-value">
+                {{prescription.diagnosis}}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="prescriptionsLoaded" class="card col-xs-11 col-md-5" (click)="navigateToAddPrescription()">
+        <img class="mx-auto my-auto" src="../../assets/add.png" height="50px" width="50px">
+      </div>
+    </div>
+  </div>
+  <!-- Right part - Quick search -->
+  <div class="page-section col-xs-10 col-md-4">
+    <div class="w-100">
+        <input class="mx-auto" style="margin-right: 10px" placeholder="Find a medication" [(ngModel)]="searchedMedication" name="medication">
+        <button class="mx-auto" mat-raised-button color="primary"> Search </button>
+    </div>
+  </div>
+</div>

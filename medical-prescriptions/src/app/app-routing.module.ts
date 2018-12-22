@@ -5,6 +5,7 @@ import { RegisterComponent } from './register/register.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AuthGuardService } from './core/auth-guard.service';
 import { PrescriptionComponent } from './prescription/prescription.component';
+import { AddPrescriptionComponent } from './add-prescription/add-prescription.component';
 
 const routes: Routes = [
   {
@@ -28,6 +29,10 @@ const routes: Routes = [
   {
     path: 'prescription',
     component: PrescriptionComponent
+  },
+  {
+    path: 'addPrescription',
+    component: AddPrescriptionComponent
   }
 ];
 
