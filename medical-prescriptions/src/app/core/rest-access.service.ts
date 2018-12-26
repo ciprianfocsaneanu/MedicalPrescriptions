@@ -7,7 +7,7 @@ const mockPrescriptions: IPrescription[] = [
   {
     timestamp: '20/12/2018',
     id: 1,
-    medications: [],
+    medications: [{ name :'Nurofen'}, { name :'Paracetamol'}, { name :'Brufen'}],
     diagnosis: 'Lorem ipsum 1',
     medic: 'Dr. Prad Bitt'
   },
@@ -45,6 +45,16 @@ export class RestAccessService {
     const resultSubject = new Subject<IPrescription>();
     timer(1000).subscribe(result => {
       resultSubject.next(mockPrescriptions[0]);
+      resultSubject.complete();
+    });
+    return resultSubject;
+  }
+
+  public addPrescription(prescriptionData: IPrescription): Observable<boolean> {
+    const resultSubject = new Subject<boolean>();
+    mockPrescriptions.push(prescriptionData);
+    timer(1000).subscribe(result => {
+      resultSubject.next(true);
       resultSubject.complete();
     });
     return resultSubject;

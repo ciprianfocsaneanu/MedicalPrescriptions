@@ -1,3 +1,38 @@
+.card {
+    margin: 10px;
+    cursor: pointer;
+}
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
 .field-title {
     font-weight: bold;
+    font-size: calc(8px + .6vw);
+}
+.field-value {
+    font-size: calc(8px + .6vw);
+}
+.card-body {
+    padding: 1vw;
+}
+.col-md-7 {
+    border-right: 1px solid #3f51b5;
+    min-height: 80vh;
+}
+.page-section {
+    margin-top: 15px;
+}
+.page-title {
+    font-size: calc(10px + .8vw);
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.page-subtitle {
+    font-size: calc(8px + .8vw);
+    font-weight: 500;
+    margin: 10px 0;
+}
+.details {
+    margin-bottom: 15px;
 }

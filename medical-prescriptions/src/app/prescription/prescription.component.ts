@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { RestAccessService } from '../core/rest-access.service';
 import { Prescription } from '../model/prescription.model';
 
+declare var ol: any;
+
 @Component({
   selector: 'app-prescription',
   templateUrl: './prescription.component.html',
@@ -11,6 +13,10 @@ import { Prescription } from '../model/prescription.model';
 export class PrescriptionComponent implements OnInit {
 
   private m_id: number;
+  private m_longitude: number = 44.435544; // hardcoded UPB location
+  private m_latitude: number = 26.051683;
+  private m_pharmacyResults: string[] = ['Dona', 'HelpNet', 'Catena'];
+  private map: any;
   
   public prescription: Prescription;
 
@@ -28,16 +34,37 @@ export class PrescriptionComponent implements OnInit {
     });
   }
 
+  // Getters and setters
   public get prescriptionLoaded(): boolean {
     return !!this.prescription;
   }
+  public get pharmacyResults(): string[] {
+    return this.m_pharmacyResults ? this.m_pharmacyResults : [];
+  }
 
+  // Private methods
   private getPrescriptionData(): void {
     this.m_restAccessService.getPrescription(this.m_id).subscribe(prescription => {
       if (prescription) {
         this.prescription = new Prescription(prescription);
+        this.setupMap();
       }
     });
   }
-
+  private setCenter() {
+    var view = this.map.getView();
+    view.setCenter(ol.proj.fromLonLat([this.m_latitude, this.m_longitude]));
+    view.setZoom(15);
+  }
+  private setupMap(): void { 
+    this.map = new ol.Map({
+      target: 'map',
+      layers: [
+        new ol.layer.Tile({
+          source: new ol.source.OSM()
+        })
+      ]
+    });
+    this.setCenter();
+  }
 }

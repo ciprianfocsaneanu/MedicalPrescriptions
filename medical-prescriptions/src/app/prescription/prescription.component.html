@@ -1,43 +1,70 @@
-<mat-spinner class="mx-auto" style="margin-top: 15px" [diameter]="50" [style.display]="!prescriptionLoaded ? 'block' : 'none'"></mat-spinner>
-<div *ngIf="prescriptionLoaded">
-  <div>
-    <span class="field-title">
-      Id:
-    </span>
-    <span class="field-value">
-        {{prescription.id}}
-    </span>
+<div class="row">
+  <div class="page-section col-xs-10 col-md-7">
+      <div class="page-title">
+        Prescription Details
+      </div>
+      <mat-spinner class="mx-auto" style="margin-top: 15px" [diameter]="50" [style.display]="!prescriptionLoaded ? 'block' : 'none'"></mat-spinner>
+      <div *ngIf="prescriptionLoaded">
+        <div class="details">
+          <span class="field-title">
+            Id:
+          </span>
+          <span class="field-value">
+              {{prescription.id}}
+          </span>
+        </div>
+        <div class="details">
+          <span class="field-title">
+            Date:
+          </span>
+          <span class="field-value">
+              {{prescription.date}}
+          </span>
+        </div>
+        <div class="details">
+          <span class="field-title">
+            Medic:
+          </span>
+          <span class="field-value">
+              {{prescription.medic}}
+          </span>
+        </div>
+        <div class="details">
+          <span class="field-title">
+            Diagnosis:
+          </span>
+          <span class="field-value">
+              {{prescription.diagnosis}}
+          </span>
+        </div>
+        <div class="details">
+          <span class="field-title">
+            Medications:
+          </span>
+          <span class="field-value">
+            <ul>
+              <li *ngFor="let medication of prescription.medications">
+                {{medication.name}}
+              </li>
+            </ul>
+          </span>
+        </div>
+      </div>
   </div>
-  <div>
-    <span class="field-title">
-      Date:
-    </span>
-    <span class="field-value">
-        {{prescription.date}}
-    </span>
-  </div>
-  <div>
-    <span class="field-title">
-      Medications:
-    </span>
-    <span class="field-value">
-        {{prescription.medications}}
-    </span>
-  </div>
-  <div>
-    <span class="field-title">
-      Medic:
-    </span>
-    <span class="field-value">
-        {{prescription.medic}}
-    </span>
-  </div>
-  <div>
-    <span class="field-title">
-      Diagnosis:
-    </span>
-    <span class="field-value">
-        {{prescription.diagnosis}}
-    </span>
+  <div class="page-section col-xs-10 col-md-5">
+    <div class="page-title">
+      Recommended pharmacies
+    </div>
+    <div id="map" class="map"></div>
+    <div class="page-subtitle">
+      Top 3
+    </div>
+    <mat-spinner class="mx-auto" style="margin-top: 15px" [diameter]="30" [style.display]="pharmacyResults.length == 0 ? 'block' : 'none'"></mat-spinner>
+    <ul *ngIf="pharmacyResults.length > 0">
+      <li *ngFor="let pharmacyResult of pharmacyResults">
+        {{pharmacyResult}}
+      </li>
+    </ul>
   </div>
 </div>
+

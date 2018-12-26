@@ -2,8 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
-    MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule,
+    MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatDatepickerModule
 } from '@angular/material';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
+
 @NgModule({
     imports: [
         CommonModule,
@@ -15,7 +17,9 @@ import {
         MatTableModule,
         MatMenuModule,
         MatIconModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatDatepickerModule,
+        MatMomentDateModule
     ],
     exports: [
         CommonModule,
@@ -27,8 +31,10 @@ import {
         MatTableModule,
         MatMenuModule,
         MatIconModule,
-        MatProgressSpinnerModule
-    ],
+        MatProgressSpinnerModule,
+        MatDatepickerModule,
+        MatMomentDateModule
+    ]
 })
 export class CustomMaterialModule {
 }
