@@ -54,9 +54,9 @@
   </div>
   <!-- Right part - Quick search -->
   <div class="page-section col-xs-10 col-md-4">
-    <div class="w-100">
-        <input class="mx-auto" style="margin-right: 10px" placeholder="Find a medication" [(ngModel)]="searchedMedication" name="medication">
-        <button class="mx-auto" mat-raised-button color="primary"> Search </button>
+    <div class="mx-auto">
+        <input style="margin-right: 10px" placeholder="Find a medication" [(ngModel)]="searchedMedication" name="medication">
+        <button mat-raised-button [disabled]="!searchButtonEnabled" color="primary"> Search </button>
     </div>
   </div>
 </div>

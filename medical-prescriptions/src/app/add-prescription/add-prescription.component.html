@@ -19,15 +19,13 @@
             <input matInput placeholder="Diagnosis" [(ngModel)]="diagnosis" type="text" name="diagnosis"
               required>
           </mat-form-field>
-          TODO
-          <!-- <mat-form-field class="form-field">
-              <mat-label>Medications</mat-label>
-              <textarea matInput formControlName="medications" matTextareaAutosize matAutosizeMinRows=1 matAutosizeMaxRows=20></textarea>
-          </mat-form-field> -->
+          <mat-form-field class="form-field">
+            <textarea matInput placeholder="Medications" id="medications" (change)="medicationsValueChange($event)" matTextareaAutosize matAutosizeMinRows=1 matAutosizeMaxRows=7></textarea>
+          </mat-form-field>
         </form>
         <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-raised-button [disabled]="showSpinner" class="mx-auto" (click)="addNewPrescription(medications.value)" color="primary">Add</button>
+        <button mat-raised-button [disabled]="showSpinner || !addButtonEnabled" class="mx-auto" (click)="addNewPrescription(medications.value)" color="primary">Add</button>
       </mat-card-actions>
     </mat-card>

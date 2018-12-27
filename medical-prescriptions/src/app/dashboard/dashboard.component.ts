@@ -31,6 +31,9 @@ export class DashboardComponent implements OnInit {
   public get prescriptionsLoaded(): boolean {
     return !!this.m_prescriptions;
   }
+  public get searchButtonEnabled(): boolean {
+    return !!this.searchedMedication && this.searchedMedication.length > 0;
+  }
 
   public prescriptionClicked(prescription: Prescription): void {
     if (prescription) {
