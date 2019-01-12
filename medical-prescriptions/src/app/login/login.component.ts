@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthenticationService } from '../core/authentication.service';
+import { ILoginUser } from '../model/user.model';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +15,8 @@ export class LoginComponent implements OnInit {
 
   private m_showSpinner = false;
 
-  constructor(private m_authenticationService: AuthenticationService) { }
+  constructor(private m_authenticationService: AuthenticationService,
+    private m_router: Router) { }
 
   ngOnInit() {
   }
@@ -23,15 +26,20 @@ export class LoginComponent implements OnInit {
   }
   login() {
     if (this.email && this.email.length > 0 && this.password && this.password.length > 0) {
-
-      const payload = {
-        email: this.email,
+      this.m_showSpinner = true;
+      const payload: ILoginUser = {
+        username: this.email,
         password: this.password
       };
       this.m_authenticationService.login(payload).subscribe(result => {
-
+        console.log(result);
+        this.m_showSpinner = false;
+        if (result) {
+          this.m_router.navigate(['dashboard']);
+        }
       });
+    } else {
+      window.alert('Please complete all fields with valid data!');
     }
   }
-
 }

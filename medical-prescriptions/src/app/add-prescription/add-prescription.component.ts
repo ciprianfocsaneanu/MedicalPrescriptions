@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Prescription, IPrescription, IMedication } from '../model/prescription.model';
+import { Prescription, IPrescription, IMedication, dateFormat, IMedicationWithQuantity } from '../model/prescription.model';
 import * as moment from 'moment';
 import { RestAccessService } from '../core/rest-access.service';
 import { Router } from '@angular/router';
@@ -30,9 +30,9 @@ export class AddPrescriptionComponent implements OnInit {
   public addNewPrescription(medicationsString: string): void {
     const newPrescription: IPrescription = {
       medic: this.medic,
-      diagnosis: this.diagnosis,
-      timestamp: this.date.format('DD/MM/YYYY'),
-      medications: this.parseMedications()
+      description: this.diagnosis,
+      creationDate: this.date.format(dateFormat),
+      medicineList: this.parseMedications()
     };
     this.showSpinner = true;
     this.m_restAccessService.addPrescription(newPrescription).subscribe(result => {
@@ -44,13 +44,35 @@ export class AddPrescriptionComponent implements OnInit {
     try {
       this.medications = event.target.value;
       console.log(this.medications);
+      this.parseMedications();
     } catch(e) {
       console.error('could not set textarea-value');
     }
   }
 
-  private parseMedications(): IMedication[] {
-    // TODO: Parse this.medications string
-    return [];
+  private parseMedications(): IMedicationWithQuantity[] {
+    const medicineList: IMedicationWithQuantity[] = [];
+    try {
+      if (this.medications && this.medications.length > 0) {
+        const rows = this.medications.split('\n');
+        rows.forEach(row => {
+          if (row && row.length > 0) {
+            const rowSplit = row.split('-');
+            if (rowSplit && rowSplit.length === 2) {
+              const medicine: IMedicationWithQuantity = {
+                medicine: <any>{
+                  name: rowSplit[0]
+                },
+                quantity: Number(rowSplit[1])
+              };
+              medicineList.push(medicine);
+            }
+          }
+        });
+      }
+    } catch (err) {
+      console.log(err);
+    }
+    return medicineList.filter(medicine => medicine.quantity > 0);
   }
 }

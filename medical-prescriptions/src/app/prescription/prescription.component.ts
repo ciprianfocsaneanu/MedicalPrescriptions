@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestAccessService } from '../core/rest-access.service';
-import { Prescription } from '../model/prescription.model';
+import { Prescription, IMedication } from '../model/prescription.model';
+import { IPharmacy } from '../model/pharmacy.model';
 
 declare var ol: any;
 
@@ -17,8 +18,10 @@ export class PrescriptionComponent implements OnInit {
   private m_latitude: number = 26.051683;
   private m_pharmacyResults: string[] = ['Dona', 'HelpNet', 'Catena'];
   private map: any;
-  
+
+  public pharmaciesLoading = true;
   public prescription: Prescription;
+  public pharmacies: IPharmacy[] = [];
 
   constructor(private m_activatedRoute: ActivatedRoute, private m_router: Router,
     private m_restAccessService: RestAccessService) { }
@@ -34,6 +37,21 @@ export class PrescriptionComponent implements OnInit {
     });
   }
 
+  public getMedicineNamesForPharmacy(pharmacy: IPharmacy): string[] {
+    const names = [];
+    if (pharmacy && pharmacy.medicineList) {
+        pharmacy.medicineList.forEach(medicine => {
+            if (medicine && medicine.name) {
+                names.push(medicine.name);
+            }
+        });
+    }
+    return names;
+  }
+  public getMedicineTextDisplay(pharmacy: IPharmacy): string {
+    return this.getMedicineNamesForPharmacy(pharmacy).join(', ');
+  }
+
   // Getters and setters
   public get prescriptionLoaded(): boolean {
     return !!this.prescription;
@@ -47,14 +65,30 @@ export class PrescriptionComponent implements OnInit {
     this.m_restAccessService.getPrescription(this.m_id).subscribe(prescription => {
       if (prescription) {
         this.prescription = new Prescription(prescription);
+        this.searchPharmacies();
         this.setupMap();
+      }
+    });
+  }
+  private searchPharmacies(): void {
+    const medicineList: IMedication[] = this.prescription.medicineList.map(entry => entry.medicine);
+    this.pharmaciesLoading = true;
+    this.m_restAccessService.findPharmacies(medicineList).subscribe(pharmacies => {
+      this.pharmaciesLoading = false;
+      if (pharmacies) {
+        this.pharmacies = pharmacies;
+        this.pharmacies.forEach(pharmacy => {
+          if (pharmacy.latitude && pharmacy.longitude) {
+            this.addMarker(pharmacy.latitude, pharmacy.longitude, pharmacy.name);
+          }
+        });
       }
     });
   }
   private setCenter() {
     var view = this.map.getView();
     view.setCenter(ol.proj.fromLonLat([this.m_latitude, this.m_longitude]));
-    view.setZoom(15);
+    view.setZoom(13);
   }
   private setupMap(): void { 
     const baseMapLayer = new ol.layer.Tile({
@@ -65,8 +99,6 @@ export class PrescriptionComponent implements OnInit {
       layers: [baseMapLayer]
     });
     this.setCenter();
-    this.addMarker(this.m_latitude, this.m_longitude, 'Poli');
-    this.addMarker(this.m_longitude, this.m_latitude, 'Poli 2');
   }
   private addMarker(latitude: number, longitude: number, name: string): void {
     const style = new ol.style.Style({

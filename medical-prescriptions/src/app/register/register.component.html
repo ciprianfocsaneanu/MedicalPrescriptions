@@ -7,11 +7,11 @@
   <mat-card-content>
     <form class="example-form">
       <mat-form-field class="form-field">
-        <input matInput placeholder="First Name" [(ngModel)]="newUser.firstname" type="password" name="firstname"
+        <input matInput placeholder="Full Name" [(ngModel)]="newUser.fullName" type="text" name="fullname"
           required>
       </mat-form-field>
       <mat-form-field class="form-field">
-        <input matInput placeholder="Last Name" [(ngModel)]="newUser.lastname" type="password" name="lastname" required>
+        <input matInput placeholder="Age" [(ngModel)]="newUser.age" type="number" name="age" required>
       </mat-form-field>
       <mat-form-field class="form-field">
         <input matInput placeholder="Email" [(ngModel)]="newUser.email" name="email" required>
@@ -24,12 +24,12 @@
           required>
       </mat-form-field>
     </form>
-    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button [disabled]="showSpinner" class="mx-auto" (click)="register()" color="primary">Register</button>
     <div style="margin-top: 20px; font-size: 14px">
       <a href="/login"> I already have an account </a>
     </div>
+    <mat-spinner class="mx-auto" [style.display]="showSpinner ? 'block' : 'none'" [diameter]="30"></mat-spinner>
   </mat-card-actions>
 </mat-card>

@@ -13,12 +13,12 @@
         <input matInput placeholder="Password" [(ngModel)]="password" type="password" name="password" required>
       </mat-form-field>
     </form>
-    <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button [disabled]="showSpinner" (click)="login()" color="primary">Login</button>
     <div style="margin-top: 20px; font-size: 14px">
       <a href="/register"> I don't have an account </a>
     </div>
+    <mat-spinner class="mx-auto" [style.display]="showSpinner ? 'block' : 'none'" [diameter]="30"></mat-spinner>
   </mat-card-actions>
 </mat-card>

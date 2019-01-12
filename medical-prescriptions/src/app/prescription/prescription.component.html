@@ -43,8 +43,14 @@
           </span>
           <span class="field-value">
             <ul>
-              <li *ngFor="let medication of prescription.medications">
-                {{medication.name}}
+              <li *ngFor="let medication of prescription.medicineList">
+                <span>
+                  {{medication.medicine.name}}
+                </span>
+                -
+                <span>
+                  {{medication.quantity}}
+                </span>
               </li>
             </ul>
           </span>
@@ -57,12 +63,17 @@
     </div>
     <div id="map" class="map"></div>
     <div class="page-subtitle">
-      Top 3
+      Top results:
     </div>
-    <mat-spinner class="mx-auto" style="margin-top: 15px" [diameter]="30" [style.display]="pharmacyResults.length == 0 ? 'block' : 'none'"></mat-spinner>
+    <mat-spinner class="mx-auto" style="margin-top: 15px" [diameter]="30" [style.display]="pharmaciesLoading ? 'block' : 'none'"></mat-spinner>
     <ul *ngIf="pharmacyResults.length > 0">
-      <li *ngFor="let pharmacyResult of pharmacyResults">
-        {{pharmacyResult}}
+      <li *ngFor="let pharmacy of pharmacies">
+        <div>
+          {{pharmacy.name}} - Address: {{pharmacy.address}} - Open: {{pharmacy.openAt}}-{{pharmacy.closeAt}}
+        </div>
+        <div>
+          Medications available: {{getMedicineTextDisplay(pharmacy)}}
+        </div>
       </li>
     </ul>
   </div>

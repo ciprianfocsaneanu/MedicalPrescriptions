@@ -56,7 +56,19 @@
   <div class="page-section col-xs-10 col-md-4">
     <div class="mx-auto">
         <input style="margin-right: 10px" placeholder="Find a medication" [(ngModel)]="searchedMedication" name="medication">
-        <button mat-raised-button [disabled]="!searchButtonEnabled" color="primary"> Search </button>
+        <button mat-raised-button [disabled]="!searchButtonEnabled" color="primary" (click)="searchMedication()"> Search </button>
+        <div id="dashboard-map" class="map" style="margin-top: 20px"></div>
+        <div *ngIf="!!pharmacies" class="page-subtitle">
+          Top results:
+        </div>
+        <mat-spinner class="mx-auto" style="margin-top: 15px" [diameter]="30" [style.display]="medicationLoading ? 'block' : 'none'"></mat-spinner>
+        <ul *ngIf="!!pharmacies">
+          <li *ngFor="let pharmacy of pharmacies">
+            <div>
+              {{pharmacy.name}} - Address: {{pharmacy.address}} - Open: {{pharmacy.openAt}}-{{pharmacy.closeAt}}
+            </div>
+          </li>
+        </ul>
     </div>
   </div>
 </div>

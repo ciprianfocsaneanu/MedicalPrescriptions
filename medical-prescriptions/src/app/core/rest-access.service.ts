@@ -1,61 +1,77 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject, timer } from 'rxjs';
-import { IPrescription } from '../model/prescription.model';
+import { Injectable } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { IPrescription, IMedication } from '../model/prescription.model';
+import { AuthenticationService } from './authentication.service';
+import { IPharmacy } from '../model/pharmacy.model';
 
-const mockPrescriptions: IPrescription[] = [
-  {
-    timestamp: '20/12/2018',
-    id: 1,
-    medications: [{ name :'Nurofen'}, { name :'Paracetamol'}, { name :'Brufen'}],
-    diagnosis: 'Lorem ipsum 1',
-    medic: 'Dr. Prad Bitt'
-  },
-  {
-    timestamp: '21/12/2018',
-    id: 2,
-    medications: [],
-    diagnosis: 'Lorem ipsum 2',
-    medic: 'Dr. Bavid Deckham'
-  },
-  {
-    timestamp: '22/12/2018',
-    id: 3,
-    medications: [],
-    diagnosis: 'Lorem ipsum 3',
-    medic: 'Dr. Sohn Jnow'
-  },
-];
-
+const prescriptionsApiUrl = 'http://localhost:8302/prescription';
+const pharmacyApiUrl = 'http://localhost:8302/inventory/pharmacy';
 @Injectable()
 export class RestAccessService {
 
-  constructor(private m_httpClient: HttpClient) {}
+  constructor(private m_httpClient: HttpClient,
+    private m_authenticationService: AuthenticationService) {}
 
   public getAllPrescriptions(): Observable<IPrescription[]> {
     const resultSubject = new Subject<IPrescription[]>();
-    timer(1000).subscribe(result => {
-      resultSubject.next(mockPrescriptions);
-      resultSubject.complete();
+    this.m_httpClient.get(prescriptionsApiUrl, {
+      headers: this.m_authenticationService.httpHeaders
+    }).subscribe((response: IPrescription[]) => {
+      resultSubject.next(response);
+    }, err => {
+      window.alert('API Authentication Error. Redirecting to login ...');
+      this.m_authenticationService.logout();
+      resultSubject.next(null);
     });
     return resultSubject;
   }
 
   public getPrescription(id: number): Observable<IPrescription> {
     const resultSubject = new Subject<IPrescription>();
-    timer(1000).subscribe(result => {
-      resultSubject.next(mockPrescriptions[0]);
-      resultSubject.complete();
+    this.m_httpClient.get(prescriptionsApiUrl + '/' + id, {
+      headers: this.m_authenticationService.httpHeaders
+    }).subscribe((response: IPrescription) => {
+      resultSubject.next(response);
+    }, err => {
+      window.alert('API Authentication Error. Redirecting to login ...');
+      this.m_authenticationService.logout();
+      resultSubject.next(null);
     });
     return resultSubject;
   }
 
   public addPrescription(prescriptionData: IPrescription): Observable<boolean> {
     const resultSubject = new Subject<boolean>();
-    mockPrescriptions.push(prescriptionData);
-    timer(1000).subscribe(result => {
-      resultSubject.next(true);
-      resultSubject.complete();
+    const body: IPrescription = {
+      creationDate: prescriptionData.creationDate,
+      description: prescriptionData.description,
+      medicineList: prescriptionData.medicineList
+    };
+    this.m_httpClient.post(prescriptionsApiUrl,
+      body,
+      { headers: this.m_authenticationService.httpHeaders }
+    ).subscribe(response => {
+      resultSubject.next(!!response);
+    }, err => {
+      window.alert('API Authentication Error. Redirecting to login ...');
+      this.m_authenticationService.logout();
+      resultSubject.next(false);
+    });
+    return resultSubject;
+  }
+
+  public findPharmacies(medicineList: IMedication[]): Observable<IPharmacy[]> {
+    const resultSubject = new Subject<IPharmacy[]>();
+    this.m_httpClient.post(pharmacyApiUrl,
+      medicineList,
+      { headers: this.m_authenticationService.httpHeaders
+    }).subscribe((response: IPharmacy[]) => {
+      resultSubject.next(response);
+    }, err => {
+      window.alert('API Authentication Error. Redirecting to login ...');
+      this.m_authenticationService.logout();
+      resultSubject.next(null);
     });
     return resultSubject;
   }

@@ -22,6 +22,11 @@
           <mat-form-field class="form-field">
             <textarea matInput placeholder="Medications" id="medications" (change)="medicationsValueChange($event)" matTextareaAutosize matAutosizeMinRows=1 matAutosizeMaxRows=7></textarea>
           </mat-form-field>
+          <div>
+            Obs: Add a new row for each medication. A row should respect the following format:
+            <br>
+            'name-quantity'
+          </div>
         </form>
         <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
       </mat-card-content>

@@ -1,43 +1,54 @@
+export interface ILoginUser {
+    username: string;
+    password: string;
+}
+export interface IRegisterUser {
+    email: string;
+    password: string;
+    age: number;
+    fullName: string;
+}
+
 export interface IUser {
     email: string;
-    firstname: string;
-    lastname: string;
+    fullName: string;
+    age: number;
 
     password?: string;
 }
 
 export class UserModel implements IUser {
     private m_email = '';
-    private m_firstname = '';
-    private m_lastname = '';
+    private m_fullName = '';
     private m_password = '';
+    private m_age: number = null;
 
     constructor(user?: IUser) {
         if (user) {
             this.m_email = user.email;
-            this.m_firstname = user.firstname;
-            this.m_lastname = user.lastname;
+            this.m_fullName = user.fullName;
             this.m_password = user.password;
+            this.m_age = user.age;
         }
     }
 
+    public get age(): number {
+        return this.m_age;
+    }
+    public set age(value: number) {
+        this.m_age = value;
+    }
     public get email(): string {
         return this.m_email;
     }
     public set email(value: string) {
         this.m_email = value;
     }
-    public get firstname(): string {
-        return this.m_firstname;
+    public get fullName(): string {
+        return this.m_fullName;
     }
-    public set firstname(value: string) {
-        this.m_firstname = value;
-    }
-    public get lastname(): string {
-        return this.m_lastname;
-    }
-    public set lastname(value: string) {
-        this.m_lastname = value;
+    public set fullName(value: string) {
+        this.m_fullName = value;
     }
     public get password(): string {
         return this.m_password;
