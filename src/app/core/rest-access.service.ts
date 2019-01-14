@@ -5,7 +5,7 @@ import { IPrescription, IMedication } from '../model/prescription.model';
 import { AuthenticationService } from './authentication.service';
 import { IPharmacy } from '../model/pharmacy.model';
 
-const prescriptionsApiUrl = 'http://localhost:8302/prescription';
+const prescriptionsApiUrl = 'http://localhost:8302/prescriptions';
 const pharmacyApiUrl = 'http://localhost:8302/inventory/pharmacy';
 @Injectable()
 export class RestAccessService {
@@ -46,6 +46,7 @@ export class RestAccessService {
     const body: IPrescription = {
       creationDate: prescriptionData.creationDate,
       description: prescriptionData.description,
+      medic: prescriptionData.medic,
       medicineList: prescriptionData.medicineList
     };
     this.m_httpClient.post(prescriptionsApiUrl,
