@@ -7,6 +7,7 @@ import { IPharmacy } from '../model/pharmacy.model';
 
 const prescriptionsApiUrl = 'http://localhost:8302/prescriptions';
 const pharmacyApiUrl = 'http://localhost:8302/inventory/pharmacy';
+
 @Injectable()
 export class RestAccessService {
 

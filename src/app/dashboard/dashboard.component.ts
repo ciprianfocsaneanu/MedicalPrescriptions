@@ -15,8 +15,9 @@ export class DashboardComponent implements OnInit {
 
   private m_prescriptions: Prescription[] = null;
   private map: any;
-  private m_longitude: number = 44.435544; // hardcoded UPB location
-  private m_latitude: number = 26.051683;
+  private m_longitude: number = 44.427815; // hardcoded Piata Unirii location
+  private m_latitude: number = 26.103925;
+  private vectorLayers: any[] = [];
 
   public searchedMedication: string = null;
   public medicationLoading = false;
@@ -53,6 +54,7 @@ export class DashboardComponent implements OnInit {
     this.m_router.navigate(['addPrescription']);
   }
   public searchMedication(): void {
+    this.deleteAllMarkers();
     if (this.searchedMedication) {
       this.medicationLoading = true;
       const medicine: any = {
@@ -62,6 +64,11 @@ export class DashboardComponent implements OnInit {
         this.medicationLoading = false;
         if (pharmacies) {
           this.pharmacies = pharmacies;
+          this.pharmacies.forEach(pharmacy => {
+            if (!isNaN(Number(pharmacy.latitude)) && !isNaN(Number(pharmacy.longitude))) {
+              this.addMarker(Number(pharmacy.latitude), Number(pharmacy.longitude), pharmacy.name);
+            }
+          });
         }
       });
     }
@@ -71,7 +78,7 @@ export class DashboardComponent implements OnInit {
   private setCenter() {
     var view = this.map.getView();
     view.setCenter(ol.proj.fromLonLat([this.m_latitude, this.m_longitude]));
-    view.setZoom(13);
+    view.setZoom(12);
   }
   private setupMap(): void { 
     const baseMapLayer = new ol.layer.Tile({
@@ -82,6 +89,12 @@ export class DashboardComponent implements OnInit {
       layers: [baseMapLayer]
     });
     this.setCenter();
+  }
+  private deleteAllMarkers(): void {
+    this.vectorLayers.forEach(layer => {
+      this.map.removeLayer(layer);
+    });
+    this.vectorLayers = [];
   }
   private addMarker(latitude: number, longitude: number, name: string): void {
     const style = new ol.style.Style({
@@ -96,7 +109,7 @@ export class DashboardComponent implements OnInit {
 
     const marker = new ol.Feature({
       geometry: new ol.geom.Point(
-        ol.proj.fromLonLat([latitude,longitude])
+        ol.proj.fromLonLat([longitude, latitude])
       ),
       label: name
     });
@@ -115,6 +128,7 @@ export class DashboardComponent implements OnInit {
       //   return style;
       // }
     });
+    this.vectorLayers.push(markerVectorLayer);
     this.map.addLayer(markerVectorLayer);
   }
 }

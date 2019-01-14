@@ -7,6 +7,6 @@ export interface IPharmacy {
     closeAt: number;
     medicineList: IMedication[];
 
-    latitude?: number;
-    longitude?: number;
+    latitude?: string;
+    longitude?: string;
 }

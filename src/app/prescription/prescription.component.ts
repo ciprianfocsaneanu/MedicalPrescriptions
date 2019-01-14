@@ -14,8 +14,8 @@ declare var ol: any;
 export class PrescriptionComponent implements OnInit {
 
   private m_id: number;
-  private m_longitude: number = 44.435544; // hardcoded UPB location
-  private m_latitude: number = 26.051683;
+  private m_longitude: number = 44.427815; // hardcoded Piata Unirii location
+  private m_latitude: number = 26.103925;
   private m_pharmacyResults: string[] = ['Dona', 'HelpNet', 'Catena'];
   private map: any;
 
@@ -78,8 +78,8 @@ export class PrescriptionComponent implements OnInit {
       if (pharmacies) {
         this.pharmacies = pharmacies;
         this.pharmacies.forEach(pharmacy => {
-          if (pharmacy.latitude && pharmacy.longitude) {
-            this.addMarker(pharmacy.latitude, pharmacy.longitude, pharmacy.name);
+          if (!isNaN(Number(pharmacy.latitude)) && !isNaN(Number(pharmacy.longitude))) {
+            this.addMarker(Number(pharmacy.latitude), Number(pharmacy.longitude), pharmacy.name);
           }
         });
       }
@@ -88,7 +88,7 @@ export class PrescriptionComponent implements OnInit {
   private setCenter() {
     var view = this.map.getView();
     view.setCenter(ol.proj.fromLonLat([this.m_latitude, this.m_longitude]));
-    view.setZoom(13);
+    view.setZoom(12);
   }
   private setupMap(): void { 
     const baseMapLayer = new ol.layer.Tile({
@@ -101,19 +101,9 @@ export class PrescriptionComponent implements OnInit {
     this.setCenter();
   }
   private addMarker(latitude: number, longitude: number, name: string): void {
-    const style = new ol.style.Style({
-      text: new ol.style.Text({
-        font: 'bold 11px "Open Sans", "Arial Unicode MS", "sans-serif"',
-        placement: 'line',
-        fill: new ol.style.Fill({
-          color: 'white'
-        })
-      })
-    });
-
     const marker = new ol.Feature({
       geometry: new ol.geom.Point(
-        ol.proj.fromLonLat([latitude,longitude])
+        ol.proj.fromLonLat([longitude, latitude])
       ),
       label: name
     });
@@ -121,16 +111,7 @@ export class PrescriptionComponent implements OnInit {
       features: [marker]
     });
     const markerVectorLayer = new ol.layer.Vector({
-      source: vectorSource,
-      // TODO: Show label
-      // style: style
-      // style: function(feature) {
-      //   console.log('Check you get the property', feature.get('label'));
-      //   console.log(style.getText());
-      //   style.getText().setText(feature.get('label'));
-      //   console.log(style.getText());
-      //   return style;
-      // }
+      source: vectorSource
     });
     this.map.addLayer(markerVectorLayer);
   }
